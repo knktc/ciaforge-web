@@ -1,3 +1,22 @@
 <!doctype html>
 <html lang="en" style="background:#101827"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="theme-color" content="#101827" /><style>html,body{margin:0;background:#101827}</style><link rel="stylesheet" href="/src/styles.css" /><title>CiaForge Web</title></head>
-<body><main class="web-app"><header><img src="/icon.webp" width="32" height="32" style="width:32px;height:32px;visibility:hidden" onload="this.style.visibility='visible'" alt="" /><span>CiaForge Web</span></header><section><h1>Convert 3DS images to CIA</h1><p>Your file stays on this device</p><p id="unsupported" class="unsupported" hidden>This browser cannot save converted files locally. <a href="https://github.com/knktc/CiaForge/releases">Download the desktop app</a></p><label class="picker"><input id="file" type="file" accept=".cci,.3ds" />Choose file or drop it here</label><div id="preview" hidden><canvas id="icon" width="48" height="48"></canvas><div><strong id="title"></strong><small id="publisher"></small></div></div><p id="selected"></p><button id="action" disabled>Convert to CIA</button><progress id="progress" max="100" value="0" hidden></progress><p id="status" aria-live="polite"></p></section><footer><a href="https://github.com/knktc/ciaforge-web">View on GitHub</a></footer></main><script type="module" src="/src/main.ts"></script></body></html>
+<body><main class="web-app"><header><img src="/icon.webp" width="32" height="32" style="width:32px;height:32px;visibility:hidden" onload="this.style.visibility='visible'" alt="" /><span>CiaForge Web</span></header><section><h1>Convert 3DS images to CIA</h1><p>Your file stays on this device</p><p id="unsupported" class="unsupported" hidden>This browser cannot save converted files locally. <a href="https://github.com/knktc/CiaForge/releases">Download the desktop app</a></p><label class="picker"><input id="file" type="file" accept=".cci,.3ds" />Choose file or drop it here</label><div id="preview" hidden><canvas id="icon" width="48" height="48"></canvas><div><strong id="title"></strong><small id="publisher"></small></div></div><p id="selected"></p><button id="action" disabled>Convert to CIA</button><progress id="progress" max="100" value="0" hidden></progress><p id="status" aria-live="polite"></p></section><footer>
+  <nav class="project-links" aria-label="Project and author">
+    <a class="project-link" href="https://github.com/knktc/ciaforge-web" target="_blank" rel="noopener noreferrer">
+      <span class="link-icon">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .75a11.25 11.25 0 0 0-3.558 21.924c.563.103.768-.244.768-.542 0-.267-.01-.974-.015-1.912-3.13.68-3.791-1.508-3.791-1.508-.512-1.3-1.25-1.646-1.25-1.646-1.022-.699.078-.685.078-.685 1.13.08 1.725 1.16 1.725 1.16 1.005 1.722 2.637 1.225 3.279.937.102-.729.393-1.225.715-1.507-2.498-.284-5.124-1.249-5.124-5.56 0-1.228.44-2.232 1.16-3.019-.116-.284-.503-1.428.11-2.977 0 0 .945-.302 3.094 1.153a10.78 10.78 0 0 1 5.625 0c2.148-1.455 3.092-1.153 3.092-1.153.614 1.549.227 2.693.111 2.977.722.787 1.158 1.791 1.158 3.018 0 4.323-2.63 5.273-5.136 5.552.404.35.765 1.04.765 2.096 0 1.513-.014 2.733-.014 3.104 0 .3.203.65.774.54A11.25 11.25 0 0 0 12 .75Z"/></svg>
+      </span>
+      <span class="link-copy"><strong>GitHub</strong><span>Explore the source</span></span>
+      <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      <span class="visually-hidden">(opens in a new tab)</span>
+    </a>
+    <a class="project-link" href="https://knktc.com" target="_blank" rel="noopener noreferrer">
+      <span class="link-icon link-icon-website">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5a17 17 0 0 0 14 0M5 17.5a17 17 0 0 1 14 0"/></svg>
+      </span>
+      <span class="link-copy"><strong>knktc.com</strong><span>My personal website</span></span>
+      <svg class="link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+      <span class="visually-hidden">(opens in a new tab)</span>
+    </a>
+  </nav>
+</footer></main><script type="module" src="/src/main.ts"></script></body></html>
