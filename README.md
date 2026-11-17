@@ -27,6 +27,23 @@ npm run build
 npm run preview
 ```
 
+Select a `.3ds` / `.cci` file with the picker or drop one anywhere on the page.
+File drops highlight the picker; unsupported file types and multiple-file drops
+show an error. A running conversion keeps its current file.
+
+The optional browser regression check uses an installed Chrome with a temporary
+profile and synthetic images. With `npm run preview` running, use a second shell:
+
+```sh
+npm run test:browser
+```
+
+Set `CIAFORGE_TEST_URL` if the server uses a different URL (default:
+`http://127.0.0.1:4173/`) and `CHROME_BIN` if Chrome is not at its default macOS
+location or available as `google-chrome` on Linux. This check covers native
+file drops, preview, the conversion flow and selection guards; the save picker
+and output writable are simulated.
+
 ## Cloudflare Pages
 
 This is a static Pages site: HTML, CSS, JavaScript, WebP and the prebuilt WASM

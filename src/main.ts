@@ -13,6 +13,7 @@ const icon = document.querySelector<HTMLCanvasElement>('#icon')!
 const title = document.querySelector<HTMLElement>('#title')!
 const publisher = document.querySelector<HTMLElement>('#publisher')!
 const unsupported = document.querySelector<HTMLElement>('#unsupported')!
+const canSave = 'showSaveFilePicker' in window
 let file: File | null = null
 let selectionVersion = 0
 let busy = false
@@ -38,25 +39,23 @@ function clearFile() {
   setStatus('')
 }
 
-if (!('showSaveFilePicker' in window)) {
+if (!canSave) {
   unsupported.hidden = false
   input.disabled = true
   setStatus('Please download the desktop app to convert this file')
 }
 
-input.addEventListener('change', async () => {
-  const current = input.files?.[0] ?? null
-  const version = ++selectionVersion
-  file = current
-  completed = false
-  preview.hidden = true
-  progress.hidden = true
-  progress.value = 0
-  selected.textContent = current ? `${current.name} · ${(current.size / 1024 / 1024).toFixed(1)} MB` : ''
-  action.disabled = true
-  action.textContent = 'Convert to CIA'
-  setStatus('')
+async function selectFile(current: File | null) {
+  if (busy || !canSave) return
+  clearFile()
   if (!current) return
+  if (!/\.(3ds|cci)$/i.test(current.name)) {
+    setStatus('Choose a .3ds or .cci file')
+    return
+  }
+  const version = selectionVersion
+  file = current
+  selected.textContent = `${current.name} · ${(current.size / 1024 / 1024).toFixed(1)} MB`
   try {
     const metadata = previewMetadata(await prepare(browserInput(current)))
     if (version !== selectionVersion || busy) return
@@ -68,7 +67,48 @@ input.addEventListener('change', async () => {
   } catch (error) {
     if (version === selectionVersion) setStatus(error instanceof Error ? error.message : String(error))
   }
+}
+
+input.addEventListener('change', () => { void selectFile(input.files?.[0] ?? null) })
+
+// Handle file drags across the whole page so the browser cannot open the ROM.
+const isFileDrag = (event: DragEvent) =>
+  Array.from(event.dataTransfer?.types ?? []).includes('Files') || !!event.dataTransfer?.files.length
+let dragDepth = 0
+function clearDrag() {
+  dragDepth = 0
+  pickerArea.classList.remove('is-dragover')
+}
+document.addEventListener('dragenter', event => {
+  if (!isFileDrag(event)) return
+  event.preventDefault()
+  dragDepth++
+  if (!busy && canSave) pickerArea.classList.add('is-dragover')
 })
+document.addEventListener('dragover', event => {
+  if (!isFileDrag(event)) return
+  event.preventDefault()
+  if (event.dataTransfer) event.dataTransfer.dropEffect = busy || !canSave ? 'none' : 'copy'
+})
+document.addEventListener('dragleave', event => {
+  if (!isFileDrag(event)) return
+  if (--dragDepth <= 0) clearDrag()
+})
+document.addEventListener('drop', event => {
+  if (!isFileDrag(event)) return
+  event.preventDefault()
+  clearDrag()
+  if (busy || !canSave) return
+  const files = event.dataTransfer!.files
+  if (files.length !== 1) {
+    clearFile()
+    setStatus('Drop one file at a time')
+    return
+  }
+  void selectFile(files[0])
+})
+document.addEventListener('dragend', clearDrag)
+window.addEventListener('blur', clearDrag)
 
 function drawIcon(bytes: Uint8Array) {
   const context = icon.getContext('2d')!
@@ -95,6 +135,7 @@ action.addEventListener('click', async () => {
   if (!picker) { setStatus('Use a browser with local file saving support, or download the desktop app'); return }
   const current = file
   let writable: FileSystemWritableFileStream | undefined
+  clearDrag()
   busy = true
   action.disabled = true
   input.disabled = true
